@@ -13,116 +13,40 @@
 //      if so make screen white
 //      else make screen black
 
-(MAIN_LOOP) 
-    @KBD    // RAM[24576]
-    D=M     // D=RAM[24576] // read contents of key
-    @WHITE_SCREEN
-    D;JEQ   // if key == 0; make screen white
-
-    @SCREEN
-    D=A
-    @addr
-    M=D     // addr = 16384
-
-    // i = 0 
-        // while i < 256
-        // j = 0
-        // while j < 32
-        //  set RAM[addr] = -1
-        // j + 1
-        // addr = addr + 1
-    // i = i + 1
-    @0
+(START)
+    @8192
     D=A
     @i
-    M=D     // i = 0
+    M=D
 
-    (OUTER_LOOP)    // while i < 256
-        @256
-        D=A
-        @i
-        D=D-M       // 256 - i
-        @MAIN_LOOP
-        D;JEQ  // i == 256 jump to MainLOOP 
-
-        @0       
-        D=A     // put 0 in D for j  
-        @j
-        M=D     // set j = 0
-
-        (INNER_LOOP) // while j < 32
-            @32
-            D=A
-            @j
-            D=D-M
-            @OUTER_LOOP
-            D;JEQ   // j == 32
-
-            @addr
-            A=M
-            M=-1        // RAM[addr]=111111111....
-
-            @j
-            M=M+1       // j = j + 1
-            @addr
-            M=M+1       // addr = addr + 1
-            
-            @INNER_LOOP
-            0;JMP
-
-   // @MAIN_LOOP
-    //0;JMP
-(WHITE_SCREEN)
-
-    @SCREEN
-    D=A
-    @addr
-    M=D     // addr = 16384
-
-    // i = 0 
-        // while i < 256
-        // j = 0
-        // while j < 32
-        //  set RAM[addr] = -1
-        // j + 1
-        // addr = addr + 1
-    // i = i + 1
-    @0
-    D=A
+(START_LOOP)
     @i
-    M=D     // i = 0
+    M=M-1
+    D=M
+    @START
+    D;JLT               // check if i < 0
+    
+    @KBD                // poll current keyboard press
+    D=M
+    @DRAW_WHITE_SCREEN  // If key input is 0, no key is being press, draw white Screen
+    D;JEQ
+    @DRAW_BLACK_SCREEN
+    0;JMP
 
-    (WHITE_OUTER_LOOP)    // while i < 256
-        @256
-        D=A
-        @i
-        D=D-M       // 256 - i
-        @MAIN_LOOP
-        D;JEQ  // i == 256 jump to MainLOOP 
+(DRAW_BLACK_SCREEN)
+    @SCREEN
+    D=A                // load register for screen
+    @i
+    A=D+M               // offset from base screen address to draw current pixel
+    M=-1                // set 16 pixels to black
+    @START_LOOP         // go decrement the current offset
+    0;JMP
 
-        @0       
-        D=A     // put 0 in D for j  
-        @j
-        M=D     // set j = 0
-
-        (WHITE_INNER_LOOP) // while j < 32
-            @32
-            D=A
-            @j
-            D=D-M
-            @WHITE_OUTER_LOOP
-            D;JEQ   // j == 32
-
-            @addr
-            A=M
-            M=0        // RAM[addr]=000000000000....
-
-            @j
-            M=M+1       // j = j + 1
-            @addr
-            M=M+1       // addr = addr + 1
-            
-            @WHITE_INNER_LOOP
-            0;JMP
-    //@MAIN_LOOP
-    // 0;JMP
+(DRAW_WHITE_SCREEN)
+    @SCREEN
+    D=A                // load register for screen
+    @i
+    A=D+M               // offset from base screen address to draw current pixel
+    M=0                 // set 16 pixels to white
+    @START_LOOP         // go decrement the current offset
+    0;JMP
