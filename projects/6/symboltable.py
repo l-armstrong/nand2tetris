@@ -1,0 +1,1 @@
+"""manages the symbol table"""

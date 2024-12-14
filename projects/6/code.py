@@ -1,0 +1,1 @@
+"""translate each field into its corresponding binary value"""
