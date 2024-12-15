@@ -25,5 +25,10 @@ class Parser:
     def getcommand(self):
         return self.code[self.lineno]
     
+    def command_type(self):
+        if self.code[self.lineno].startswith("@"):
+            return COMMANDS.A_COMMAND
+        else: return COMMANDS.C_COMMAND
+    
 
     
