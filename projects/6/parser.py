@@ -30,5 +30,15 @@ class Parser:
             return COMMANDS.A_COMMAND
         else: return COMMANDS.C_COMMAND
     
+    def dest(self):
+        pass
 
+    def comp(self):
+        pass
+
+    def jump(self): 
+        pass
+
+    def label(self):
+        pass
     
