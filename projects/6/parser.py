@@ -30,7 +30,6 @@ class Parser:
         else: return COMMANDS.C_COMMAND
     
     def dest(self):
-        "D;JGT"
         if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
                 D = self.code[self.lineno].split("=", 1)[0]
                 return D
