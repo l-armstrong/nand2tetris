@@ -54,7 +54,7 @@ class Code:
         }
 
     def comp(self, token):
-        if token: return "1" if "M" in token else "0" + self._comp_mapping[token]
+        if token: return "1" + self._comp_mapping[token] if "M" in token else "0" + self._comp_mapping[token]
 
     def dest(self, token):
         return self._dest_mapping[token] if token in self._dest_mapping else None

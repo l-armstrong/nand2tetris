@@ -30,15 +30,20 @@ class Parser:
         else: return COMMANDS.C_COMMAND
     
     def dest(self):
+        "D;JGT"
         if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
-            D = self.code[self.lineno].split("=", 1)[0]
-            return D
+                D = self.code[self.lineno].split("=", 1)[0]
+                return D
         return None
 
     def comp(self):
-        if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
-            C = self.code[self.lineno].split("=", 1)[1]
-            return C
+        if self.command_type() == COMMANDS.C_COMMAND:
+            if "=" in self.code[self.lineno]:
+                C = self.code[self.lineno].split("=", 1)[1]
+                return C
+            elif ";" in self.code[self.lineno]:
+                D = self.code[self.lineno].split(";", 1)[0]
+                return D
         return None 
 
     def jump(self): 
