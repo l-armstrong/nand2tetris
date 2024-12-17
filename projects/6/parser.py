@@ -1,6 +1,5 @@
 """unpacks each instruction into its underlying fields"""
 from enum import Enum
-import sys
 
 class COMMANDS(Enum):
     A_COMMAND   = 1 
@@ -17,9 +16,9 @@ class Parser:
             return f.read()
     
     def eof(self):
-        return self.lineno > len(self.code)
+        return self.lineno >= len(self.code)
     
-    def advanced(self):
+    def advance(self):
         self.lineno += 1
     
     def getcommand(self):
@@ -31,14 +30,28 @@ class Parser:
         else: return COMMANDS.C_COMMAND
     
     def dest(self):
-        pass
+        if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
+            D = self.code[self.lineno].split("=", 1)[0]
+            return D
+        return None
 
     def comp(self):
-        pass
+        """D=D+A"""
+        """D=D+A;JTL"""
+        if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
+            C = self.code[self.lineno].split("=", 1)[1]
+            return C
+        return None 
 
     def jump(self): 
-        pass
-
+        if self.command_type() == COMMANDS.C_COMMAND and ";" in self.code[self.lineno]:
+            J = self.code[self.lineno].split(";", 1)[-1]
+            return J
+        return None
+    
     def label(self):
-        pass
+        if self.command_type() == COMMANDS.A_COMMAND:
+            A = self.code[self.lineno].split("@")[-1]
+            return A
+        return None
     
