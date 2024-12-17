@@ -53,11 +53,11 @@ class Code:
             "D|M": "010101"
         }
 
-    def comp(self):
-        pass
+    def comp(self, token):
+        if token: return "1" if "M" in token else "0" + self._comp_mapping[token]
 
-    def dest(self):
-        pass
+    def dest(self, token):
+        return self._dest_mapping[token] if token in self._dest_mapping else None
 
-    def jump(self):
-        pass
+    def jump(self, token):
+        return self._jump_mapping[token] if token in self._jump_mapping else None
