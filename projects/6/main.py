@@ -17,8 +17,8 @@ if __name__ == '__main__':
                 if parser.command_type() == COMMANDS.A_COMMAND: line += bin(int(l))[2:].zfill(16)
                 elif parser.command_type() == COMMANDS.C_COMMAND: 
                     print("COMP", code.comp(c))
-                    print("DEST", code.dest(c))
-                    print("JUMP", code.jump(c))
+                    print("DEST", code.dest(d))
+                    print("JUMP", code.jump(j))
                     line += "111" + code.comp(c) + code.dest(d) + code.jump(j)
                     print(line)
                 parser.advance()
