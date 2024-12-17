@@ -36,8 +36,6 @@ class Parser:
         return None
 
     def comp(self):
-        """D=D+A"""
-        """D=D+A;JTL"""
         if self.command_type() == COMMANDS.C_COMMAND and "=" in self.code[self.lineno]:
             C = self.code[self.lineno].split("=", 1)[1]
             return C
