@@ -10,17 +10,14 @@ if __name__ == '__main__':
         code = Code()
         symboltable = SymbolTable()
         with open(outfile, "w") as f:
-            print(parser.code)
             while not parser.eof():
                 d = parser.dest()
                 c = parser.comp()
                 j = parser.jump()
                 l = parser.label()
                 if parser.command_type() == COMMANDS.LABEL and l not in symboltable: 
-                    print("l", l, parser.ip)
                     symboltable.add_symbol(l, parser.ip)
                     parser.advance()
-                # print(d, c, j, l)
                 else:
                     parser.advance()
                     parser.advance_ip()
@@ -37,9 +34,14 @@ if __name__ == '__main__':
                 if parser.command_type() == COMMANDS.LABEL: parser.advance(); continue
                 elif parser.command_type() == COMMANDS.A_COMMAND: 
                     if l in symboltable: l = str(symboltable.table[l])
+                    elif l not in symboltable and not l.isdigit():
+                        symboltable.add_symbol(l, symboltable.current_free_register)
+                        l = str(symboltable.table[l])
+                        symboltable.next_free_register()
                     line += bin(int(l))[2:].zfill(16)
                 elif parser.command_type() == COMMANDS.C_COMMAND: 
                     line += "111" + code.comp(c) + code.dest(d) + code.jump(j)
                 parser.advance()
                 f.write(line + "\n" if not parser.eof() else line)
+            print(symboltable.table)
         f.close()
