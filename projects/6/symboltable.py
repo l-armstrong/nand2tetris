@@ -29,15 +29,11 @@ class SymbolTable:
         }
         self.current_free_register = 16
     
-    def add_symbol(self, symbol, address):
-        self.table[symbol] = address
+    def add_symbol(self, symbol, address): self.table[symbol] = address
     
-    def get_address(self, symbol):
-        return self.table[symbol]
+    def get_address(self, symbol): return self.table[symbol]
     
-    def next_free_register(self):
-        self.current_free_register += 1
+    def next_free_register(self): self.current_free_register += 1
     
-    def __contains__(self, symbol):
-        return True if symbol in self.table.keys() else False
+    def __contains__(self, symbol): return True if symbol in self.table.keys() else False
     

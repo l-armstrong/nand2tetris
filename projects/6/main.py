@@ -21,8 +21,6 @@ if __name__ == '__main__':
                 else:
                     parser.advance()
                     parser.advance_ip()
-
-            print(symboltable.table)
             parser.restart()
             while not parser.eof():
                 d = parser.dest()
@@ -30,7 +28,6 @@ if __name__ == '__main__':
                 j = parser.jump()
                 l = parser.label()
                 line = ''
-                print(str(parser.lineno + 1) + ":", d, c, j, l)
                 if parser.command_type() == COMMANDS.LABEL: parser.advance(); continue
                 elif parser.command_type() == COMMANDS.A_COMMAND: 
                     if l in symboltable: l = str(symboltable.table[l])
@@ -43,5 +40,4 @@ if __name__ == '__main__':
                     line += "111" + code.comp(c) + code.dest(d) + code.jump(j)
                 parser.advance()
                 f.write(line + "\n" if not parser.eof() else line)
-            print(symboltable.table)
         f.close()

@@ -56,8 +56,6 @@ class Code:
     def comp(self, token):
         if token: return "1" + self._comp_mapping[token] if "M" in token else "0" + self._comp_mapping[token]
 
-    def dest(self, token):
-        return self._dest_mapping[token] if token in self._dest_mapping else None
+    def dest(self, token): return self._dest_mapping[token] if token in self._dest_mapping else None
 
-    def jump(self, token):
-        return self._jump_mapping[token] if token in self._jump_mapping else None
+    def jump(self, token): return self._jump_mapping[token] if token in self._jump_mapping else None
