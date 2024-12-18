@@ -8,8 +8,9 @@ class COMMANDS(Enum):
 
 class Parser:
     def __init__(self, filename):
-        self.code = [elm for elm in self.read_file(filename).split('\n') if elm != '' and not elm.startswith('//')]
+        self.code = [elm.replace(" ", "") for elm in self.read_file(filename).split('\n') if elm != '' and not '//' in elm]
         self.lineno = 0
+        self.ip = 0
 
     def read_file(self, filename):
         with open(filename) as f:
@@ -21,12 +22,15 @@ class Parser:
     def advance(self):
         self.lineno += 1
     
+    def advance_ip(self):
+        self.ip += 1
+    
     def getcommand(self):
         return self.code[self.lineno]
     
     def command_type(self):
-        if self.code[self.lineno].startswith("@"):
-            return COMMANDS.A_COMMAND
+        if self.code[self.lineno].startswith("@"): return COMMANDS.A_COMMAND
+        elif self.code[self.lineno].startswith('('): return COMMANDS.LABEL
         else: return COMMANDS.C_COMMAND
     
     def dest(self):
@@ -55,5 +59,10 @@ class Parser:
         if self.command_type() == COMMANDS.A_COMMAND:
             A = self.code[self.lineno].split("@")[-1]
             return A
+        elif self.command_type() == COMMANDS.LABEL: 
+            A = self.code[self.lineno]
+            return A[1:-1]
         return None
     
+    def restart(self):
+        self.lineno = 0
