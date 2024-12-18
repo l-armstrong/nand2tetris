@@ -16,17 +16,13 @@ class Parser:
         with open(filename) as f:
             return f.read()
     
-    def eof(self):
-        return self.lineno >= len(self.code)
+    def eof(self): return self.lineno >= len(self.code)
     
-    def advance(self):
-        self.lineno += 1
+    def advance(self): self.lineno += 1
     
-    def advance_ip(self):
-        self.ip += 1
+    def advance_ip(self): self.ip += 1
     
-    def getcommand(self):
-        return self.code[self.lineno]
+    def getcommand(self): return self.code[self.lineno]
     
     def command_type(self):
         if self.code[self.lineno].startswith("@"): return COMMANDS.A_COMMAND
@@ -64,5 +60,4 @@ class Parser:
             return A[1:-1]
         return None
     
-    def restart(self):
-        self.lineno = 0
+    def restart(self): self.lineno = 0
